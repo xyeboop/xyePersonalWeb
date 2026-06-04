@@ -116,6 +116,7 @@ body {
   flex-direction: column;
   justify-content: center;
   margin-top: clamp(2rem, 6vw, 5rem);
+  padding-left: clamp(80px, 10vw, 280px);
   max-width: 100%;
 }
 
@@ -146,24 +147,199 @@ body {
   font-weight: 300;
 }
 
-/* ---- CTA Button ---- */
+/* ---- CTA Button (BorderGlow) ---- */
 .cta-btn {
+  /* ── Configurable glow variables ── */
+  --edge-proximity: 0;
+  --cursor-angle: 45deg;
+  --edge-sensitivity: 34;
+  --color-sensitivity: 54;
+  --border-radius: 29px;
+  --glow-padding: 30px;
+  --cone-spread: 25;
+  --fill-opacity: 0.5;
+  --card-bg: #120F17;
+
+  /* Glow color HSL — warm amber: hsl(40 80% 80%) */
+  --glow-color:       hsl(40deg 80% 80% / 100%);
+  --glow-color-60:    hsl(40deg 80% 80% / 60%);
+  --glow-color-50:    hsl(40deg 80% 80% / 50%);
+  --glow-color-40:    hsl(40deg 80% 80% / 40%);
+  --glow-color-30:    hsl(40deg 80% 80% / 30%);
+  --glow-color-20:    hsl(40deg 80% 80% / 20%);
+  --glow-color-10:    hsl(40deg 80% 80% / 10%);
+
+  /* Gradient colors: purple / pink / cyan */
+  --grad-c0: #c084fc;
+  --grad-c1: #f472b6;
+  --grad-c2: #38bdf8;
+
+  --gradient-one:   radial-gradient(at 80% 55%, var(--grad-c0) 0px, transparent 50%);
+  --gradient-two:   radial-gradient(at 69% 34%, var(--grad-c1) 0px, transparent 50%);
+  --gradient-three: radial-gradient(at 8% 6%,   var(--grad-c2) 0px, transparent 50%);
+  --gradient-four:  radial-gradient(at 41% 38%, var(--grad-c0) 0px, transparent 50%);
+  --gradient-five:  radial-gradient(at 86% 85%, var(--grad-c1) 0px, transparent 50%);
+  --gradient-six:   radial-gradient(at 82% 18%, var(--grad-c2) 0px, transparent 50%);
+  --gradient-seven: radial-gradient(at 51% 4%,  var(--grad-c1) 0px, transparent 50%);
+  --gradient-base:  linear-gradient(var(--grad-c0) 0 100%);
+
+  /* ── Layout ── */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(220,225,235,0.12);
-  border: 1px solid rgba(255,255,255,0.15);
-  backdrop-filter: blur(8px);
-  border-radius: 50px;
+  position: relative;
+  border-radius: var(--border-radius);
   width: clamp(200px, 27vw, 500px);
   height: clamp(50px, 7vw, 120px);
-  transition: background 0.3s ease, transform 0.2s ease;
   cursor: pointer;
+  isolation: isolate;
+  transform: translate3d(0, 0, 0.01px);
+  overflow: visible;
+  background: var(--card-bg);
+  border: 1px solid rgb(255 255 255 / 15%);
+  box-shadow:
+    rgba(0, 0, 0, 0.1) 0px 1px 2px,
+    rgba(0, 0, 0, 0.1) 0px 2px 4px,
+    rgba(0, 0, 0, 0.1) 0px 4px 8px,
+    rgba(0, 0, 0, 0.1) 0px 8px 16px,
+    rgba(0, 0, 0, 0.1) 0px 16px 32px;
 }
 
+/* ── Shared pseudo-element base ── */
+.cta-btn::before,
+.cta-btn::after,
+.cta-btn > .cta-glow {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Hide glow layers when cursor is far away */
+.cta-btn:not(:hover)::before,
+.cta-btn:not(:hover)::after,
+.cta-btn:not(:hover) > .cta-glow {
+  opacity: 0;
+  transition: opacity 0.75s ease-in-out;
+}
+
+/* ── ::before — Colored mesh-gradient border ── */
+.cta-btn::before {
+  border: 1px solid transparent;
+  z-index: -1;
+  background:
+    linear-gradient(var(--card-bg) 0 100%) padding-box,
+    linear-gradient(rgb(255 255 255 / 0%) 0% 100%) border-box,
+    var(--gradient-one)   border-box,
+    var(--gradient-two)   border-box,
+    var(--gradient-three) border-box,
+    var(--gradient-four)  border-box,
+    var(--gradient-five)  border-box,
+    var(--gradient-six)   border-box,
+    var(--gradient-seven) border-box,
+    var(--gradient-base)  border-box;
+
+  opacity: calc((var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity)));
+
+  -webkit-mask-image:
+    conic-gradient(
+      from var(--cursor-angle) at center,
+      black calc(var(--cone-spread) * 1%),
+      transparent calc((var(--cone-spread) + 15) * 1%),
+      transparent calc((100 - var(--cone-spread) - 15) * 1%),
+      black calc((100 - var(--cone-spread)) * 1%)
+    );
+  mask-image:
+    conic-gradient(
+      from var(--cursor-angle) at center,
+      black calc(var(--cone-spread) * 1%),
+      transparent calc((var(--cone-spread) + 15) * 1%),
+      transparent calc((100 - var(--cone-spread) - 15) * 1%),
+      black calc((100 - var(--cone-spread)) * 1%)
+    );
+}
+
+/* ── ::after — Gradient fill near edges ── */
+.cta-btn::after {
+  z-index: -1;
+  border: 1px solid transparent;
+  background:
+    var(--gradient-one)   padding-box,
+    var(--gradient-two)   padding-box,
+    var(--gradient-three) padding-box,
+    var(--gradient-four)  padding-box,
+    var(--gradient-five)  padding-box,
+    var(--gradient-six)   padding-box,
+    var(--gradient-seven) padding-box,
+    var(--gradient-base)  padding-box;
+
+  opacity: calc(var(--fill-opacity) * (var(--edge-proximity) - var(--color-sensitivity)) / (100 - var(--color-sensitivity)));
+  mix-blend-mode: soft-light;
+
+  -webkit-mask-image:
+    linear-gradient(to bottom, black, black),
+    radial-gradient(ellipse at 50% 50%, black 40%, transparent 65%),
+    radial-gradient(ellipse at 66% 66%, black 5%, transparent 40%),
+    radial-gradient(ellipse at 33% 33%, black 5%, transparent 40%),
+    radial-gradient(ellipse at 66% 33%, black 5%, transparent 40%),
+    radial-gradient(ellipse at 33% 66%, black 5%, transparent 40%),
+    conic-gradient(from var(--cursor-angle) at center, transparent 5%, black 15%, black 85%, transparent 95%);
+  mask-image:
+    linear-gradient(to bottom, black, black),
+    radial-gradient(ellipse at 50% 50%, black 40%, transparent 65%),
+    radial-gradient(ellipse at 66% 66%, black 5%, transparent 40%),
+    radial-gradient(ellipse at 33% 33%, black 5%, transparent 40%),
+    radial-gradient(ellipse at 66% 33%, black 5%, transparent 40%),
+    radial-gradient(ellipse at 33% 66%, black 5%, transparent 40%),
+    conic-gradient(from var(--cursor-angle) at center, transparent 5%, black 15%, black 85%, transparent 95%);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+}
+
+/* ── .cta-glow — Outer glow ring ── */
+.cta-btn > .cta-glow {
+  inset: calc(var(--glow-padding) * -1);
+  z-index: 1;
+
+  -webkit-mask-image:
+    conic-gradient(
+      from var(--cursor-angle) at center,
+      black 2.5%, transparent 10%, transparent 90%, black 97.5%
+    );
+  mask-image:
+    conic-gradient(
+      from var(--cursor-angle) at center,
+      black 2.5%, transparent 10%, transparent 90%, black 97.5%
+    );
+
+  opacity: calc((var(--edge-proximity) - var(--edge-sensitivity)) / (100 - var(--edge-sensitivity)));
+  mix-blend-mode: plus-lighter;
+}
+
+.cta-btn > .cta-glow::before {
+  content: "";
+  position: absolute;
+  inset: var(--glow-padding);
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0  1px  var(--glow-color),
+    inset 0 0 1px  0   var(--glow-color-60),
+    inset 0 0 3px  0   var(--glow-color-50),
+    inset 0 0 6px  0   var(--glow-color-40),
+    inset 0 0 15px 0   var(--glow-color-30),
+    inset 0 0 25px 2px var(--glow-color-20),
+    inset 0 0 50px 2px var(--glow-color-10),
+    0 0 1px  0   var(--glow-color-60),
+    0 0 3px  0   var(--glow-color-50),
+    0 0 6px  0   var(--glow-color-40),
+    0 0 15px 0   var(--glow-color-30),
+    0 0 25px 2px var(--glow-color-20),
+    0 0 50px 2px var(--glow-color-10);
+}
+
+/* ── Hover ── */
 .cta-btn:hover {
-  background: rgba(255,255,255,0.2);
-  border-color: rgba(255,255,255,0.3);
   transform: translateY(-2px);
 }
 
@@ -171,18 +347,156 @@ body {
   transform: translateY(0);
 }
 
+/* ── Hero note ── */
+.hero-note {
+  font-family: "Inter", sans-serif;
+  font-size: 0.85rem;
+  color: rgba(232, 237, 243, 0.35);
+  margin-top: 1.2rem;
+}
+
+/* ── Inner content ── */
 .cta-text {
   font-family: "Inter", sans-serif;
   font-size: clamp(1rem, 2.25vw, 2.6rem);
   font-weight: 400;
-  color: #1a1a1a;
+  color: #ffffff;
+  position: relative;
+  z-index: 2;
 }
 
 .cta-arrow {
   font-size: clamp(1.2rem, 2.6vw, 3rem);
-  color: #1a1a1a;
+  color: #ffffff;
   margin-left: 0.3em;
   line-height: 1;
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== Video Page ===== */
+.video-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.video-back {
+  align-self: flex-start;
+  color: #e8edf3;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+.video-back:hover { opacity: 1; }
+
+.video-info {
+  width: 60%;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.video-title {
+  font-family: "Inter", sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 700;
+  color: #e8edf3;
+  margin-bottom: 0.6rem;
+}
+
+.video-desc {
+  font-family: "Inter", sans-serif;
+  font-size: clamp(0.9rem, 1.5vw, 1.3rem);
+  font-weight: 400;
+  color: rgba(232, 237, 243, 0.7);
+  margin-bottom: 0.5rem;
+}
+
+.video-note {
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
+  color: rgba(232, 237, 243, 0.4);
+  font-style: italic;
+}
+
+.video-wrapper {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ai-video {
+  width: 100%;
+  border-radius: 12px;
+  outline: none;
+  cursor: pointer;
+  background: #000;
+}
+
+/* ── Custom Controls ── */
+.video-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  margin-top: 16px;
+  padding: 0 4px;
+}
+
+.vc-btn {
+  background: none;
+  border: none;
+  color: #e8edf3;
+  font-size: 1.2rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.2s;
+}
+.vc-btn:hover { opacity: 0.7; }
+
+.vc-progress-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 3px;
+  position: relative;
+  cursor: pointer;
+}
+.vc-progress-track:hover { height: 8px; }
+
+.vc-progress-fill {
+  height: 100%;
+  background: #d1d3ff;
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.vc-progress-thumb {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  background: #d1d3ff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  left: 0%;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.vc-progress-track:hover .vc-progress-thumb { opacity: 1; }
+
+.vc-time {
+  color: rgba(232,237,243,0.6);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  min-width: 100px;
+  text-align: right;
 }
 
 /* ===== Responsive ===== */

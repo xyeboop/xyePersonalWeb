@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}AI Workflow — Ting Lab{% endblock %}
+
+{% block content %}
+<div class="video-page">
+  <a href="/" class="video-back">&larr; Back</a>
+
+  <div class="video-info">
+    <h1 class="video-title">COPLAY 玩名堂</h1>
+    <p class="video-desc">用多智能体与多模态交互，打造 AI 驱动的线下桌游社交体验。</p>
+    <p class="video-note">备注：1分45秒开始是AI做的动画，前面是背景和项目介绍</p>
+  </div>
+
+  <div class="video-wrapper">
+    <video id="ai-video" class="ai-video" playsinline>
+      <source src="{{ url_for('static', filename='videos/coplay.mp4') }}" type="video/mp4">
+    </video>
+
+    <div class="video-controls" id="video-controls">
+      <button class="vc-btn" id="vc-play" title="Play / Pause">
+        <span class="vc-play-icon">&#9654;</span>
+      </button>
+      <div class="vc-progress-track" id="vc-track">
+        <div class="vc-progress-fill" id="vc-fill"></div>
+        <div class="vc-progress-thumb" id="vc-thumb"></div>
+      </div>
+      <span class="vc-time" id="vc-time">0:00 / 0:00</span>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/video-player.js') }}"></script>
+{% endblock %}

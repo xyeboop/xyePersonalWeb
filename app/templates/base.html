@@ -13,15 +13,15 @@
   {% block head_extra %}{% endblock %}
 </head>
 <body>
-  <div id="particle-bg"></div>
+  {% if request.path == '/' %}<div id="particle-bg"></div>{% endif %}
   <div class="page">
     <header class="header">
       <a href="/" class="logo">Ting Lab</a>
       <nav class="nav">
-        <a href="#index" class="nav-link active">Index</a>
+        <a href="/" class="nav-link {{ 'active' if request.path == '/' }}">Index</a>
         <a href="#about" class="nav-link">About</a>
         <a href="#projects" class="nav-link">Projects</a>
-        <a href="#ai-workflow" class="nav-link">AI Workflow</a>
+        <a href="/ai-workflow" class="nav-link {{ 'active' if request.path == '/ai-workflow' }}">AI Workflow</a>
         <a href="#contact" class="nav-link">Contact</a>
       </nav>
     </header>
@@ -29,8 +29,10 @@
     {% block content %}{% endblock %}
   </div>
 
+  {% if request.path == '/' %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="{{ url_for('static', filename='js/particles.js') }}"></script>
+  {% endif %}
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   {% block scripts %}{% endblock %}
 </body>

@@ -4,9 +4,9 @@
  */
 (function () {
   // ── Configuration ──────────────────────────────────────────────
-  const PARTICLE_COUNT = 3000;
+  const PARTICLE_COUNT = 4500;
   const SPREAD = 800;
-  const ROTATION_SPEED = 0.00015;
+  const ROTATION_SPEED = 0.00003;
   const PARALLAX_STRENGTH = 2.5;
 
   // ── Scene setup ────────────────────────────────────────────────
@@ -63,9 +63,9 @@
   }
 
   // Create varied textures for size/color variation
-  const texBright = createGlowTexture(64, "rgba(220,235,255,1)", 0.15);
-  const texMedium = createGlowTexture(64, "rgba(180,200,230,0.85)", 0.25);
-  const texDim = createGlowTexture(48, "rgba(140,170,210,0.6)", 0.35);
+  const texBright = createGlowTexture(64, "rgba(220,222,255,1)", 0.08);
+  const texMedium = createGlowTexture(64, "rgba(210,212,250,1)", 0.18);
+  const texDim = createGlowTexture(48, "rgba(200,202,245,1)", 0.28);
 
   // ── Particle system ────────────────────────────────────────────
   const geometry = new THREE.BufferGeometry();
@@ -74,11 +74,13 @@
   const colors = new Float32Array(PARTICLE_COUNT * 3);
 
   const colorPalette = [
-    new THREE.Color("#e8f0ff"), // ice white
-    new THREE.Color("#c8ddf8"), // soft ice blue
-    new THREE.Color("#a0c4e8"), // muted blue
-    new THREE.Color("#d8e8f8"), // silver blue
-    new THREE.Color("#f0f4fa"), // near white
+    new THREE.Color("#d1d3ff"),
+    new THREE.Color("#cdcfff"),
+    new THREE.Color("#d5d6ff"),
+    new THREE.Color("#d1d3ff"),
+    new THREE.Color("#c9cbff"),
+    new THREE.Color("#d3d4ff"),
+    new THREE.Color("#cfd0ff"),
   ];
 
   for (let i = 0; i < PARTICLE_COUNT; i++) {
@@ -89,7 +91,7 @@
 
     // Add some planar bias for "nebula" feel — flatten Y somewhat
     const flatFactor = 0.4 + Math.random() * 0.6;
-    positions[i * 3] = Math.cos(theta) * Math.sin(phi) * radius;
+    positions[i * 3] = Math.cos(theta) * Math.sin(phi) * radius + SPREAD * 0.55;
     positions[i * 3 + 1] = Math.cos(phi) * radius * flatFactor * 0.5;
     positions[i * 3 + 2] = Math.sin(theta) * Math.sin(phi) * radius * flatFactor - SPREAD * 0.5;
 
@@ -122,7 +124,7 @@
       const th = Math.random() * Math.PI * 2;
       const ph = Math.acos(2 * Math.random() - 1);
       const ff = 0.3 + Math.random() * 0.7;
-      pos[i * 3] = Math.cos(th) * Math.sin(ph) * r;
+      pos[i * 3] = Math.cos(th) * Math.sin(ph) * r + SPREAD * 0.55;
       pos[i * 3 + 1] = Math.cos(ph) * r * ff * 0.4;
       pos[i * 3 + 2] = Math.sin(th) * Math.sin(ph) * r * ff - SPREAD * 0.5;
     }
@@ -137,16 +139,16 @@
       depthTest: false,
       transparent: true,
       opacity: opacity,
-      color: new THREE.Color("#e0ebff"),
+      color: new THREE.Color("#d1d3ff"),
     });
 
     return new THREE.Points(geo, mat);
   }
 
   // Three cloud layers at different scales for depth
-  const cloud1 = createPointCloud(1200, texBright, [2.5, 5.5], 0.9);
-  const cloud2 = createPointCloud(1000, texMedium, [1.5, 3.5], 0.7);
-  const cloud3 = createPointCloud(800, texDim, [1.0, 2.5], 0.5);
+  const cloud1 = createPointCloud(2000, texBright, [5.0, 10.0], 1.0);
+  const cloud2 = createPointCloud(1500, texMedium, [3.5, 7.0], 0.85);
+  const cloud3 = createPointCloud(1000, texDim, [2.5, 5.0], 0.7);
 
   const particleGroup = new THREE.Group();
   particleGroup.add(cloud1);
@@ -213,20 +215,23 @@
   function animate() {
     requestAnimationFrame(animate);
 
-    // Smooth mouse interpolation (lerp) — faster response
-    mouse.x += (mouse.targetX - mouse.x) * 0.04;
-    mouse.y += (mouse.targetY - mouse.y) * 0.04;
+    // Smooth mouse interpolation (lerp)
+    mouse.x += (mouse.targetX - mouse.x) * 0.03;
+    mouse.y += (mouse.targetY - mouse.y) * 0.03;
 
-    // Slow rotation of the particle cloud
+    // Minimal autonomous drift
     particleGroup.rotation.y += ROTATION_SPEED;
-    particleGroup.rotation.x += ROTATION_SPEED * 0.3;
+    particleGroup.rotation.x += ROTATION_SPEED * 0.2;
 
-    // Parallax camera offset based on mouse position
-    camera.position.x +=
-      (mouse.x * PARALLAX_STRENGTH * 120 - camera.position.x) * 0.03;
-    camera.position.y +=
-      (mouse.y * PARALLAX_STRENGTH * 80 - camera.position.y) * 0.03;
-    camera.lookAt(0, -50, -200);
+    // Mouse-driven tilt — group rotates toward cursor, then returns to origin
+    const targetRotY = mouse.x * 0.15;
+    const targetRotX = mouse.y * 0.1;
+    particleGroup.rotation.y += (targetRotY - particleGroup.rotation.y) * 0.01;
+    particleGroup.rotation.x += (targetRotX - particleGroup.rotation.x) * 0.01;
+
+    // Camera stays fixed
+    camera.position.set(0, 0, 600);
+    camera.lookAt(0, 0, -200);
 
     renderer.render(scene, camera);
   }
