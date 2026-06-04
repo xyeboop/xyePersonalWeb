@@ -350,8 +350,8 @@ body {
 /* ── Hero note ── */
 .hero-note {
   font-family: "Inter", sans-serif;
-  font-size: 0.85rem;
-  color: rgba(232, 237, 243, 0.35);
+  font-size: 2rem;
+  color: rgba(232, 237, 243, 0.4);
   margin-top: 1.2rem;
 }
 
