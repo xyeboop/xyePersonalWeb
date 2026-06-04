@@ -60,7 +60,7 @@ body {
 /* ---- Logo ---- */
 .logo {
   font-family: "Inter", sans-serif;
-  font-size: clamp(1.5rem, 3.8vw, 4rem);
+  font-size: clamp(1.2rem, 2.6vw, 2.8rem);
   font-weight: 400;
   color: #e8edf3;
   letter-spacing: -0.02em;
@@ -74,14 +74,14 @@ body {
 /* ---- Navigation ---- */
 .nav {
   display: flex;
-  gap: clamp(1.5rem, 3.5vw, 5rem);
+  gap: clamp(1rem, 2.5vw, 3rem);
   align-items: flex-start;
   padding-top: 0.35rem;
 }
 
 .nav-link {
   font-family: "Inter", sans-serif;
-  font-size: clamp(1.1rem, 2.3vw, 2.8rem);
+  font-size: clamp(0.85rem, 1.5vw, 1.6rem);
   font-weight: 400;
   color: #e8edf3;
   position: relative;
@@ -116,30 +116,30 @@ body {
   flex-direction: column;
   justify-content: center;
   margin-top: clamp(2rem, 6vw, 5rem);
-  padding-left: clamp(80px, 10vw, 280px);
+  padding-left: clamp(40px, 5vw, 140px);
   max-width: 100%;
 }
 
 /* ---- Tagline ---- */
 .tagline {
   font-family: "Inter", sans-serif;
-  font-size: clamp(0.9rem, 1.8vw, 2.2rem);
+  font-size: clamp(0.8rem, 1.4vw, 1.5rem);
   font-weight: 400;
   color: #e8edf3;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  margin-bottom: clamp(1.5rem, 3vw, 3.2rem);
+  margin-bottom: clamp(1rem, 2vw, 2rem);
 }
 
 /* ---- Hero Text ---- */
 .hero-text {
   font-family: "Inter", sans-serif;
-  font-size: clamp(2.5rem, 8vw, 10rem);
+  font-size: clamp(2rem, 4.5vw, 5rem);
   font-weight: 500;
   color: #e8edf3;
   line-height: 1.15;
   letter-spacing: -0.025em;
-  margin-bottom: clamp(3rem, 6vw, 6rem);
+  margin-bottom: clamp(2rem, 3.5vw, 3.5rem);
 }
 
 .hero-text em {
@@ -189,8 +189,8 @@ body {
   justify-content: center;
   position: relative;
   border-radius: var(--border-radius);
-  width: clamp(200px, 27vw, 500px);
-  height: clamp(50px, 7vw, 120px);
+  width: clamp(160px, 20vw, 360px);
+  height: clamp(40px, 5vw, 80px);
   cursor: pointer;
   isolation: isolate;
   transform: translate3d(0, 0, 0.01px);
@@ -350,15 +350,15 @@ body {
 /* ── Hero note ── */
 .hero-note {
   font-family: "Inter", sans-serif;
-  font-size: 2rem;
+  font-size: clamp(0.9rem, 1.2vw, 1.3rem);
   color: rgba(232, 237, 243, 0.4);
-  margin-top: 1.2rem;
+  margin-top: 1rem;
 }
 
 /* ── Inner content ── */
 .cta-text {
   font-family: "Inter", sans-serif;
-  font-size: clamp(1rem, 2.25vw, 2.6rem);
+  font-size: clamp(0.85rem, 1.5vw, 1.6rem);
   font-weight: 400;
   color: #ffffff;
   position: relative;
@@ -366,7 +366,7 @@ body {
 }
 
 .cta-arrow {
-  font-size: clamp(1.2rem, 2.6vw, 3rem);
+  font-size: clamp(0.9rem, 1.7vw, 1.8rem);
   color: #ffffff;
   margin-left: 0.3em;
   line-height: 1;
