@@ -1,0 +1,109 @@
+.frame-1,
+.frame-1 * {
+  box-sizing: border-box;
+}
+.frame-1 {
+  background: #ffffff;
+  height: 1329px;
+  position: relative;
+  overflow: hidden;
+}
+.ting-lab {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 67.9099349975586px;
+  font-weight: 400;
+  position: absolute;
+  left: 60px;
+  top: 50px;
+}
+.rectangle-2 {
+  background: #d9d9d9;
+  border-radius: 50px;
+  width: 392px;
+  height: 100px;
+  position: absolute;
+  left: 60px;
+  bottom: 354px;
+}
+.explore-my-world {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 32.408748626708984px;
+  font-weight: 400;
+  position: absolute;
+  left: 125px;
+  bottom: 384px;
+}
+.index {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 32.79740905761719px;
+  font-weight: 400;
+  position: absolute;
+  left: 1661px;
+  top: 71px;
+}
+.about {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 32.79740905761719px;
+  font-weight: 400;
+  position: absolute;
+  left: 1811px;
+  top: 71px;
+}
+.projects {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 32.79740905761719px;
+  font-weight: 400;
+  position: absolute;
+  left: 1970px;
+  top: 71px;
+}
+.ai-worflw {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 32.79740905761719px;
+  font-weight: 400;
+  position: absolute;
+  left: 2161px;
+  top: 71px;
+}
+.contact {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 32.79740905761719px;
+  font-weight: 400;
+  position: absolute;
+  left: 2375px;
+  top: 71px;
+}
+.product-growth-ai-workflow {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 25.88918685913086px;
+  font-weight: 400;
+  position: absolute;
+  left: calc(50% - 1219.5px);
+  top: 353px;
+}
+.stay-curious-build-fast-learn-faster {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 114.79952239990234px;
+  font-weight: 700;
+  position: absolute;
+  left: 60px;
+  top: 404px;
+}
