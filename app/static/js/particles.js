@@ -145,10 +145,13 @@
     return new THREE.Points(geo, mat);
   }
 
+  // Scale sizes by pixel ratio — gl_PointSize is in framebuffer px
+  const pr = renderer.getPixelRatio();
+
   // Three cloud layers at different scales for depth
-  const cloud1 = createPointCloud(2000, texBright, [5.0, 10.0], 1.0);
-  const cloud2 = createPointCloud(1500, texMedium, [3.5, 7.0], 0.85);
-  const cloud3 = createPointCloud(1000, texDim, [2.5, 5.0], 0.7);
+  const cloud1 = createPointCloud(2000, texBright, [5.0 * pr, 10.0 * pr], 1.0);
+  const cloud2 = createPointCloud(1500, texMedium, [3.5 * pr, 7.0 * pr], 0.85);
+  const cloud3 = createPointCloud(1000, texDim, [2.5 * pr, 5.0 * pr], 0.7);
 
   const particleGroup = new THREE.Group();
   particleGroup.add(cloud1);
